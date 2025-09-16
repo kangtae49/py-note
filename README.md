@@ -144,9 +144,10 @@ export default defineConfig({
   "scripts": {
     "dev": "vite",
     
-    "build": "pnpm run clean && pnpm run frontend:prod && pyinstaller build-windows.spec",
+    "build": "pnpm run clean && pnpm run frontend:prod && uv run pyinstaller build-windows.spec",
     "lint": "eslint .",
     "preview": "vite preview",
+    "clean": "if exist dist rd /S /Q dist & if exist build rd /S /Q build & if exist gui rd /S /Q gui",
     "frontend:dev": "vite build --outDir gui --emptyOutDir",
     "frontend:prod": "vite build --outDir gui --emptyOutDir --minify",
     "frontend:preview": "vite preview --outDir gui --emptyOutDir",
