@@ -21,10 +21,11 @@ def run_flask(port):
     # server = Flask(__name__, static_folder='./assets', template_folder='./templates')
     server = Flask(__name__, static_folder=static_folder, template_folder=template_folder)
     server.register_blueprint(rest_bp)
-    server.run(port=port)
+    server.run(host="127.0.0.1", port=port)
 
 def run():
     port = get_free_port()
+    # port = 3000
     host = "127.0.0.1"
     ssl = False
     debug = True
@@ -36,7 +37,7 @@ def run():
     
     t = threading.Thread(target=run_flask, args=(port, ), daemon=True)
     t.start()
-
+    # run_flask(port)
     js_api = JsApi()
     window = webview.create_window(
         title='py-note', 

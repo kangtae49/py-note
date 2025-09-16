@@ -154,3 +154,7 @@ export default defineConfig({
     "start": "pnpm run frontend:dev && uv run src/index.py"
   },
 ```
+
+```sh
+pnpm add -D @types/node
+```
