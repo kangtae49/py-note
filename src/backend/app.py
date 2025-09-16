@@ -19,7 +19,9 @@ def run_flask(port):
     print(f"template_folder: {template_folder}")
     print(f"static_folder: {static_folder}")
     # server = Flask(__name__, static_folder='./assets', template_folder='./templates')
-    server = Flask(__name__, static_folder=static_folder, template_folder=template_folder)
+    server = Flask(__name__, 
+                   static_folder=static_folder, static_url_path="/assets",
+                   template_folder=template_folder)
     server.register_blueprint(rest_bp)
     server.run(host="127.0.0.1", port=port)
 
@@ -43,13 +45,12 @@ def run():
         title='py-note', 
         url=url,
         js_api=js_api, 
+        text_select=True,
         # transparent=True,
-        
         # server=server, 
         # html=html, 
         # frameless=True,
         # http_port=port
-        text_select=True,
         # draggable=True,
         )
     # webview.start(load_css, window, debug=debug, ssl=ssl)
