@@ -2,9 +2,9 @@ import sys
 import threading
 import webview
 from flask import Flask
-from backend.routes.rest import rest_bp
-from backend.utils import get_free_port, resource_path
-from backend.js_api import JsApi
+from apps.routes.rest import rest_bp
+from apps.utils import get_free_port, resource_path
+from apps.js_api import JsApi
 
 
 # html = """

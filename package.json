@@ -13,11 +13,12 @@
     "frontend:dev": "vite build --outDir gui --emptyOutDir",
     "frontend:prod": "vite build --outDir gui --emptyOutDir --minify",
     "frontend:preview": "vite preview --outDir gui --emptyOutDir",
-    "start": "concurrently \"pnpm run watch\" \"uv run src/index.py\""
+    "start": "concurrently \"pnpm run watch\" \"uv run main.py\""
   },
   "dependencies": {
     "react": "^19.1.1",
-    "react-dom": "^19.1.1"
+    "react-dom": "^19.1.1",
+    "react-mosaic-component": "^6.1.1"
   },
   "devDependencies": {
     "@eslint/js": "^9.33.0",
