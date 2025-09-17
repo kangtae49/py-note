@@ -6,7 +6,7 @@ added_files = [
     ('.\\gui', 'gui'),
 ]
 
-a = Analysis(['.\\src\\index.py'],
+a = Analysis(['.\\main.py'],
              pathex=['.\\dist'],
              binaries=[],
              datas=added_files,
@@ -34,7 +34,7 @@ exe = EXE(pyz,
           strip=False,
           upx=True,
           upx_exclude=[],
-          icon='.\\src\\assets\\logo.ico',
+          icon='.\\src\\assets\\favicon.ico',
           runtime_tmpdir=None,
           console=False,
           disable_windowed_traceback=False,
