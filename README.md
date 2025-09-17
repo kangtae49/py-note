@@ -158,3 +158,10 @@ export default defineConfig({
 ```sh
 pnpm add -D @types/node
 ```
+
+```
+pnpm run watch
+
+pnpm run py
+```
+
