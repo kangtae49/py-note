@@ -8,12 +8,12 @@ export default defineConfig({
   build: {
     outDir: 'gui',
     emptyOutDir: true,
-    assetsDir: 'assets',
+    assetsDir: 'static',
     rollupOptions: {
       output: {
-        entryFileNames: `assets/[name].js`,   // entry JS 파일 고정
-        chunkFileNames: `assets/[name].js`,   // chunk 파일 고정
-        assetFileNames: `assets/[name].[ext]` // CSS, 이미지 등 고정
+        entryFileNames: `static/[name].js`,   // entry JS 파일 고정
+        chunkFileNames: `static/[name].js`,   // chunk 파일 고정
+        assetFileNames: `static/[name].[ext]` // CSS, 이미지 등 고정
       }
     }
   }

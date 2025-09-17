@@ -8,5 +8,6 @@ dependencies = [
     "pyinstaller",
     "flask",
     "pywebview",
-    "setuptools"
+    "setuptools",
+    "requests"
 ]

@@ -13,7 +13,8 @@
     "frontend:dev": "vite build --outDir gui --emptyOutDir",
     "frontend:prod": "vite build --outDir gui --emptyOutDir --minify",
     "frontend:preview": "vite preview --outDir gui --emptyOutDir",
-    "start": "concurrently \"pnpm run watch\" \"uv run main.py\""
+    "start": "concurrently \"uv run main.py\" \"pnpm run watch\"",
+    "py": "uv run main.py"
   },
   "dependencies": {
     "react": "^19.1.1",

@@ -1,6 +1,6 @@
 import './App.css'
 import {add} from '@/components/utils'
-import viteSvg from 'public/vite.svg'
+import logo from 'src/assets/favicon.ico'
 import { useEffect } from 'react'
 function App() {
   useEffect(() => {
@@ -15,7 +15,7 @@ function App() {
   return (
     <>
     <div> hello world!@! {add(2, 1)}</div>
-    <img src={viteSvg} />
+    <img src={logo} />
     <div>{}</div>
     </>
   )
