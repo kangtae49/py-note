@@ -9,5 +9,8 @@ dependencies = [
     "flask",
     "pywebview",
     "setuptools",
-    "requests"
+    "requests",
+    "psutil",
+    "pydantic",
+    "pydantic-to-typescript",
 ]

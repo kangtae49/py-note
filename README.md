@@ -165,3 +165,14 @@ pnpm run watch
 pnpm run py
 ```
 
+```
+pnpm add -g json-schema-to-typescript
+```
+
+```sh
+pydantic2ts --module apps/models.py --output src/models.d.ts
+```
+
+```
+pnpm add @blueprintjs/core @blueprintjs/icons
+```

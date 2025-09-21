@@ -14,12 +14,17 @@
     "frontend:prod": "vite build --outDir gui --emptyOutDir --minify",
     "frontend:preview": "vite preview --outDir gui --emptyOutDir",
     "start": "concurrently \"uv run main.py\" \"pnpm run watch\"",
-    "py": "uv run main.py"
+    "runpy": "uv run main.py",
+    "models": "pnpm exec pydantic2ts --module apps/models.py --output src/models.d.ts",
+    "py": "pnpm run models && pnpm run runpy"
   },
   "dependencies": {
+    "@blueprintjs/core": "^6.3.1",
+    "@blueprintjs/icons": "^6.1.0",
     "react": "^19.1.1",
     "react-dom": "^19.1.1",
-    "react-mosaic-component": "^6.1.1"
+    "react-mosaic-component": "^6.1.1",
+    "zustand": "^5.0.8"
   },
   "devDependencies": {
     "@eslint/js": "^9.33.0",

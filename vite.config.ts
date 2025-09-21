@@ -9,6 +9,7 @@ export default defineConfig({
     outDir: 'gui',
     emptyOutDir: true,
     assetsDir: 'static',
+
     rollupOptions: {
       output: {
         entryFileNames: `static/[name].js`,   // entry JS 파일 고정
