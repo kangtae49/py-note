@@ -9,18 +9,34 @@ import {
   faFloppyDisk,
 } from '@fortawesome/free-solid-svg-icons'
 import { List } from 'react-window'
-// import AutoSizer from "react-virtualized-auto-sizer";
-import {usePlayListStore} from "@/components/music_player/playListStore.ts";
+import {usePlayListStore} from "@/components/music_player/store/playListStore.ts";
 import PlayListRowView from "@/components/music_player/PlayListRowView.tsx";
-import {useSelectedPlayListStore} from "@/components/music_player/selectedPlayListStore.ts";
-import {useSelectionBeginStore} from "@/components/music_player/selectionBeginStore.ts";
-import {usePlayPathStore} from "@/components/music_player/playPathStore.ts";
+import {useSelectedPlayListStore} from "@/components/music_player/store/selectedPlayListStore.ts";
+import {useSelectionBeginStore} from "@/components/music_player/store/selectionBeginStore.ts";
+import {usePlayPathStore} from "@/components/music_player/store/playPathStore.ts";
+import AudioView from "@/components/music_player/AudioView.tsx";
+import {useDurationStore} from "@/components/music_player/store/durationStore.ts";
+import {useCurrentTimeStore} from "@/components/music_player/store/currentTimeStore.ts";
+import {useVolumeStore} from "@/components/music_player/store/volumeStore.ts";
+import {useIsMutedStore} from "@/components/music_player/store/isMutedStore.ts";
+import {useIsPlayStore} from "@/components/music_player/store/isPlayStore.ts";
+import {usePlaybackRateStore} from "@/components/music_player/store/playbackRateStore.ts";
+import {formatSeconds, getFilename} from "@/components/utils.ts";
+import {useAudioRefStore} from "@/components/music_player/store/audioRefStore.ts";
 
 function MusicPlayerView() {
   const {playList, appendPlayList, removePlayList} = usePlayListStore();
   const {selectedPlayList, setSelectedPlayList} = useSelectedPlayListStore();
   const {setSelectionBegin} = useSelectionBeginStore();
+  const {audioRef} = useAudioRefStore();
   const {playPath, setPlayPath} = usePlayPathStore();
+  const {duration} = useDurationStore();
+  const {currentTime, setCurrentTime} = useCurrentTimeStore();
+  const {volume, setVolume} = useVolumeStore();
+  const {isMuted} = useIsMutedStore();
+  const {isPlay} = useIsPlayStore();
+  const {playbackRate} = usePlaybackRateStore();
+
 
   const openDialogPlayList = async () => {
     window.pywebview.api.open_file_dialog_open(true, ["Audio files(*.mp3;*.wav;*.ogg;*.m4a;*.opus;*.webm)"])
@@ -58,13 +74,7 @@ function MusicPlayerView() {
 
   return (
     <div className="widget movie-player">
-      {playPath !== null && (
-        <div className="audio-player">
-          <audio key={playPath} controls autoPlay={true}>
-            <source src={`/file?path=${playPath}`} />
-          </audio>
-        </div>
-      )}
+      <AudioView />
       <div className="top">
         <div className="row first">
           <div className="icon"><Icon icon={faCirclePlay}/></div>
@@ -74,7 +84,16 @@ function MusicPlayerView() {
           <div className="icon"><Icon icon={faShuffle}/></div>
           <div className="icon"><Icon icon={faRepeat}/></div>
 
-          <div className="slider"><input min="0" max="1" step="0.01" type="range" value="0.74"/></div>
+          <div className="slider">
+            <input type="range" min={0} max={1} step={0.01} value={volume}
+                    onChange={(e) => {
+                      const v = Number(e.target.value);
+                      setVolume(v);
+                      if (audioRef?.current) {
+                        audioRef.current.volume = v;
+                      }
+                    }}/>
+          </div>
           <div className="icon"><Icon icon={faVolumeHigh}/></div>
           <div className="icon"><Icon icon={faVolumeMute}/></div>
           <div className="icon" onClick={openDialogPlayList}><Icon icon={faFolderPlus}/></div>
@@ -83,10 +102,19 @@ function MusicPlayerView() {
           <div className="icon" onClick={openDialogSaveAsJson}><Icon icon={faFloppyDisk}/></div>
         </div>
         <div className="row second">
-          <div className="title">Title asdfklajsflkasjfla;sjf as dfklasfjl</div>
-          <div className="tm">0:01:33</div>
-          <div className="slider"><input min="0" max="1" step="0.01" type="range" value="0.74"/></div>
-          <div className="tm">0:01:33</div>
+          <div className="title">{getFilename(playPath ?? '')}</div>
+          <div className="tm">{formatSeconds(currentTime)}</div>
+          <div className="slider">
+            <input type="range" min={0} max={duration} step={0.01} value={currentTime}
+                    onChange={(e) => {
+                      const tm = Number(e.target.value);
+                      setCurrentTime(tm);
+                      if (audioRef?.current) {
+                        audioRef.current.currentTime = tm;
+                      }
+                    }}/>
+          </div>
+          <div className="tm">{formatSeconds(duration)}</div>
         </div>
       </div>
       <List className="play-list"

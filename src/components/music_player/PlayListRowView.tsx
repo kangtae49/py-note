@@ -6,10 +6,10 @@ import {
 } from '@fortawesome/free-solid-svg-icons'
 import { type RowComponentProps } from "react-window";
 import {getFilename} from "@/components/utils.ts";
-import {usePlayListStore} from "@/components/music_player/playListStore.ts";
-import {useSelectedPlayListStore} from "@/components/music_player/selectedPlayListStore.ts";
-import {useSelectionBeginStore} from "@/components/music_player/selectionBeginStore.ts";
-import {usePlayPathStore} from "@/components/music_player/playPathStore.ts";
+import {usePlayListStore} from "@/components/music_player/store/playListStore.ts";
+import {useSelectedPlayListStore} from "@/components/music_player/store/selectedPlayListStore.ts";
+import {useSelectionBeginStore} from "@/components/music_player/store/selectionBeginStore.ts";
+import {usePlayPathStore} from "@/components/music_player/store/playPathStore.ts";
 function PlayListRowView({
                            index,
                            playList,
