@@ -1,5 +1,7 @@
-function add(a: number, b: number) {
-    return a + b
+function getFilename(path: string) {
+    return path.split(/[/\\]/).pop();
 }
 
-export {add};
+export {
+    getFilename,
+};

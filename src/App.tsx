@@ -10,10 +10,12 @@ import AboutView from "@/components/AboutView.tsx";
 import HelpView from "@/components/HelpView.tsx";
 import type {PyMenuAction} from "@/models";
 import {useMosaicStore} from "@/store/mosaicStore.ts";
+import MusicPlayerView from "@/components/music_player/MusicPlayerView.tsx";
 
 const ELEMENT_MAP: Record<PyMenuAction, JSX.Element> = {
   "about": <AboutView />,
-  "help": <HelpView />
+  "help": <HelpView />,
+  "music_player": <MusicPlayerView />,
 }
 
 function App() {

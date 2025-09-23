@@ -19,7 +19,7 @@ export const useMosaicStore = create<MosaicStore>((set, get) => ({
   setMosaicValue: (value) => set({ mosaicValue: value }),
   addView: (id: PyMenuAction) => {
     console.log("addView", id);
-    let current = get().mosaicValue;
+    const current = get().mosaicValue;
     if (!current) {
       set({ mosaicValue: id });
       return;
@@ -33,11 +33,14 @@ export const useMosaicStore = create<MosaicStore>((set, get) => ({
     const existingIds = collectIds(current);
 
     if (!existingIds.includes(id)) {
-      current = {
-        direction: 'row',
-        first: id,
-        second: current,
-      }
+      set({
+        mosaicValue: {
+          direction: 'row',
+          first: id,
+          second: current,
+        }
+      });
+      return;
     }
 
     const updateSplit = (node: MosaicNode<PyMenuAction> | null): MosaicNode<PyMenuAction> | null => {
@@ -48,29 +51,15 @@ export const useMosaicStore = create<MosaicStore>((set, get) => ({
         return node;
       }
 
-
       const first = updateSplit(node.first);
       const second = updateSplit(node.second);
+      if (first === null || second === null) return node;
 
-      if (!first && !second) return null;
-      if (!first) return second;
-      if (!second) return first;
-
-
-      let splitPercentage: number | undefined = undefined;
-      if (typeof current !== 'string') {
-        splitPercentage = current.splitPercentage;
-        console.log('hello')
-        if ((current.splitPercentage === 0 && current.first === id) || (current.splitPercentage === 100 && current.second === id)) {
-          splitPercentage = 50;
-        }
+      if ((node.splitPercentage === 0 && first === id) || (node.splitPercentage === 100 && second === id)) {
+        return { ...node, splitPercentage: 50, first, second };
       }
 
-      if (first === id || second === id) {
-        return { ...node, splitPercentage: splitPercentage, first, second };
-      }
-
-      return { ...node, first, second };
+      return {...node, first, second}
     };
     set({ mosaicValue: updateSplit(current) });
 

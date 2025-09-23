@@ -5,7 +5,7 @@
 /* Do not modify it by hand - just update the pydantic models and then re-run the script
 */
 
-export type PyMenuAction = "about" | "help";
+export type PyMenuAction = "about" | "help" | "music_player";
 
 export interface PyMenuEvent {
   action: PyMenuAction;

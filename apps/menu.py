@@ -14,8 +14,11 @@ def on_menu_click(action: PyMenuAction):
         """)
 
 app_menu = [
+    Menu('Show', [
+        MenuAction('Music Player', lambda: on_menu_click(PyMenuAction.MUSIC_PLAYER)),
+    ]),
     Menu('Help', [
         MenuAction('About', lambda: on_menu_click(PyMenuAction.ABOUT)),
         MenuAction('Help', lambda: on_menu_click(PyMenuAction.HELP)),
-    ])
+    ]),
 ]

@@ -1,0 +1,140 @@
+
+.movie-player {
+    display: flex;
+    flex-direction: column;
+    --top-height: 32px;
+    --icon-size: 24px;
+    --icon-font-size: 17px;
+    --icon-color: #f4a261;
+    --icon-color-inactive: #d9d9d9;
+    --icon-hover-scale: scale(1.2);
+}
+
+.movie-player .top {
+    flex: 0 0 var(--top-height);
+
+    display: flex;
+    flex-direction: column;
+}
+.movie-player .top .row.first {
+    display: flex;
+    justify-content: center; align-items: center;
+    padding: 0 5px;
+}
+
+.movie-player .top .row.first .icon {
+    width: var(--icon-size);
+    height: var(--icon-size);
+    padding: 1px;
+    display: flex; justify-content: center; align-items: center;
+    box-sizing: border-box;
+}
+
+.movie-player .top .row.first .slider {
+    height: var(--icon-size);
+    max-width: 100px;
+    display: flex; justify-content: center; align-items: center;
+}
+.movie-player .top .row.first .slider input {
+    width: 100%;
+}
+.movie-player .top .row.first .slider input:focus {
+    outline: none;
+    border: none;
+    box-shadow: none;
+}
+
+.movie-player .top .row.second {
+    display: flex;
+    padding: 0 5px;
+    justify-content: center; align-items: center;
+}
+.movie-player .top .row.second .title {
+    flex: 0 0 150px;
+    text-align: center; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.movie-player .top .row.second .tm {
+    flex: 0 0 50px;
+    text-align: center; white-space: nowrap;
+}
+
+.movie-player .top .row.second .slider {
+    height: var(--icon-size);
+    display: flex; justify-content: center; align-items: center;
+    flex: 1;
+}
+.movie-player .top .row.second .slider input {
+    width: 100%;
+}
+.movie-player .top .row.second .slider input:focus {
+    outline: none;
+    border: none;
+    box-shadow: none;
+}
+
+input[type=range] {
+    -webkit-appearance: none;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+    height: 2px;
+    background: #d1866b;
+}
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    width: 11px;
+    height: 11px;
+    background: #bf4242;
+    border-radius: 50%;
+    margin-top: -4px;
+}
+.movie-player .play-list {
+    flex: 1;
+    height: 100%;
+}
+
+.movie-player .play-list .row {
+    display: flex;
+    align-items: center;
+    padding: 0 5px;
+    cursor: pointer;
+}
+
+.movie-player .play-list .row.selected {
+    background-color: #d9d9d9;
+}
+
+.fa-folder { color: var(--icon-color); font-size: var(--icon-font-size); }
+.fa-folder:hover { transform: var(--icon-hover-scale); cursor: pointer;}
+.fa-folder-plus { color: var(--icon-color); font-size: var(--icon-font-size);}
+.fa-folder-plus:hover { transform: var(--icon-hover-scale); cursor: pointer;}
+.fa-trash-can { color: var(--icon-color); font-size: var(--icon-font-size);}
+.fa-trash-can:hover { transform: var(--icon-hover-scale); cursor: pointer;}
+.fa-trash-can.inactive { color: var(--icon-color-inactive)}
+
+.fa-circle-play { color: var(--icon-color); font-size: var(--icon-font-size);}
+.fa-circle-play:hover { transform: var(--icon-hover-scale); cursor: pointer;}
+.fa-circle-pause { color: var(--icon-color); font-size: var(--icon-font-size);}
+.fa-circle-pause:hover { transform: var(--icon-hover-scale); cursor: pointer;}
+.fa-backward-step { color: var(--icon-color); font-size: var(--icon-font-size);}
+.fa-backward-step:hover { transform: var(--icon-hover-scale); cursor: pointer;}
+.fa-forward-step { color: var(--icon-color); font-size: var(--icon-font-size);}
+.fa-forward-step:hover { transform: var(--icon-hover-scale); cursor: pointer;}
+.fa-shuffle { color: var(--icon-color); font-size: var(--icon-font-size);}
+.fa-shuffle:hover { transform: var(--icon-hover-scale); cursor: pointer;}
+.fa-repeat { color: var(--icon-color); font-size: var(--icon-font-size);}
+.fa-repeat:hover { transform: var(--icon-hover-scale); cursor: pointer;}
+.fa-book-medical { color: var(--icon-color); font-size: var(--icon-font-size);}
+.fa-book-medical:hover { transform: var(--icon-hover-scale); cursor: pointer;}
+.fa-floppy-disk { color: var(--icon-color); font-size: var(--icon-font-size);}
+.fa-floppy-disk:hover { transform: var(--icon-hover-scale); cursor: pointer;}
+
+.fa-volume-high { color: var(--icon-color); font-size: var(--icon-font-size);}
+.fa-volume-high:hover { transform: var(--icon-hover-scale); cursor: pointer;}
+.fa-volume-xmark { color: var(--icon-color); font-size: var(--icon-font-size);}
+.fa-volume-xmark:hover { transform: var(--icon-hover-scale); cursor: pointer;}
+
+.fa-circle-xmark { color: var(--icon-color); font-size: var(--icon-font-size);}
+.fa-circle-xmark:hover { transform: var(--icon-hover-scale); cursor: pointer;}
+.fa-music { color: var(--icon-color); font-size: var(--icon-font-size);}
+.fa-music:hover { transform: var(--icon-hover-scale);}
