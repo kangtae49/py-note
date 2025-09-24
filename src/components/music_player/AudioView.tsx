@@ -18,12 +18,7 @@ function AudioView() {
     setPlaybackRate,
     setEnded,
   } = useAudioRefStore();
-  // const {setDuration} = useDurationStore();
-  // const {setCurrentTime} = useCurrentTimeStore();
-  // const {setVolume} = useVolumeStore();
-  // const {setIsMuted} = useIsMutedStore();
-  // const {setIsPlay} = useIsPlayStore();
-  // const {setPlaybackRate} = usePlaybackRateStore();
+
 
   const onloadedMetaData = () => {
     if (!audioRef?.current) return;
