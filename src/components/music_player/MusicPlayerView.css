@@ -94,16 +94,16 @@ input[type=range] {
 }
 
 input[type=range]::-webkit-slider-runnable-track {
-    height: 2px;
+    height: 7px;
     background: #d1866b;
 }
 input[type=range]::-webkit-slider-thumb {
     -webkit-appearance: none;
-    width: 11px;
-    height: 11px;
+    width: 21px;
+    height: 21px;
     background: #bf4242;
     border-radius: 50%;
-    margin-top: -4px;
+    margin-top: -7px;
 }
 .movie-player .play-list {
     flex: 1;
