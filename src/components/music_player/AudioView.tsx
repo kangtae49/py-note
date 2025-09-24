@@ -1,15 +1,10 @@
-import {usePlayPathStore} from "@/components/music_player/store/playPathStore.ts";
 import {useAudioRefStore} from "@/components/music_player/store/audioRefStore.ts";
 import {useEffect, useRef} from "react";
-// import {useDurationStore} from "@/components/music_player/store/durationStore.ts";
-// import {useCurrentTimeStore} from "@/components/music_player/store/currentTimeStore.ts";
-// import {useVolumeStore} from "@/components/music_player/store/volumeStore.ts";
-// import {useIsMutedStore} from "@/components/music_player/store/isMutedStore.ts";
-// import {useIsPlayStore} from "@/components/music_player/store/isPlayStore.ts";
-// import {usePlaybackRateStore} from "@/components/music_player/store/playbackRateStore.ts";
+import {usePlayListStore} from "@/components/music_player/store/playListStore.ts";
+
 
 function AudioView() {
-  const {playPath} = usePlayPathStore();
+  const {playPath} = usePlayListStore();
   const ref = useRef<HTMLAudioElement | null>(null);
   const {
     audioRef, setAudioRef,

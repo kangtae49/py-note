@@ -14,17 +14,20 @@ import { List } from 'react-window'
 import {usePlayListStore} from "@/components/music_player/store/playListStore.ts";
 import PlayListRowView from "@/components/music_player/PlayListRowView.tsx";
 import {useSelectedPlayListStore} from "@/components/music_player/store/selectedPlayListStore.ts";
-import {useSelectionBeginStore} from "@/components/music_player/store/selectionBeginStore.ts";
-import {usePlayPathStore} from "@/components/music_player/store/playPathStore.ts";
 import AudioView from "@/components/music_player/AudioView.tsx";
 import {formatSeconds, getFilename} from "@/components/utils.ts";
 import {useAudioRefStore} from "@/components/music_player/store/audioRefStore.ts";
 
 function MusicPlayerView() {
-  const {playList, appendPlayList, removePlayList, shufflePlayList, natsortPlayList} = usePlayListStore();
-  const {selectedPlayList, setSelectedPlayList} = useSelectedPlayListStore();
-  const {setSelectionBegin} = useSelectionBeginStore();
-  const {playPath, setPlayPath} = usePlayPathStore();
+  const {
+    playList, appendPlayList, removePlayList, shufflePlayList, natsortPlayList,
+    playPath, setPlayPath,
+    prevPlayPath, nextPlayPath,
+  } = usePlayListStore();
+  const {
+    selectedPlayList, setSelectedPlayList,
+    setSelectionBegin,
+  } = useSelectedPlayListStore();
   const {
     audioRef,
     paused, pause, play, togglePlay,
@@ -36,12 +39,6 @@ function MusicPlayerView() {
     ended, setEnded,
     autoPlay, setAutoPlay,
   } = useAudioRefStore();
-  // const {duration} = useDurationStore();
-  // const {currentTime, setCurrentTime} = useCurrentTimeStore();
-  // const {volume, setVolume} = useVolumeStore();
-  // const {isMuted} = useIsMutedStore();
-  // const {isPlay} = useIsPlayStore();
-  // const {playbackRate} = usePlaybackRateStore();
 
 
   const openDialogPlayList = async () => {
@@ -162,7 +159,9 @@ function MusicPlayerView() {
             <div className="icon" onClick={() => toggleShuffle()}>
               <Icon icon={faShuffle} className={shuffle ? '': 'inactive'}/>
             </div>
-            <div className="icon"><Icon icon={faBackwardStep}/></div>
+            <div className="icon" onClick={() => prevPlayPath()}>
+              <Icon icon={faBackwardStep}/>
+            </div>
             <div className="icon middle"
                  onClick={async () => {
                    setAutoPlay(paused);
@@ -171,7 +170,9 @@ function MusicPlayerView() {
             >
               <Icon icon={paused ? faCirclePlay : faCirclePause }/>
             </div>
-            <div className="icon"><Icon icon={faForwardStep}/></div>
+            <div className="icon" onClick={() => nextPlayPath()}>
+              <Icon icon={faForwardStep}/>
+            </div>
             <div className="icon" onClick={() => toggleRepeat()}>
               {repeat === 'repeat_all' && <Icon icon={faArrowsSpin}/>}
               {repeat === 'repeat_one' && <Icon icon={faRotateRight}/>}

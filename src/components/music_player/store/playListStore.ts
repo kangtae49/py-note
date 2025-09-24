@@ -3,17 +3,26 @@ import natsort from "natsort";
 
 interface PlayListStore {
   playList: string[];
+  playPath: string | null;
   setPlayList: (value: string[]) => void;
+  setPlayPath: (value: string | null) => void;
+
   appendPlayList: (value: string[]) => void;
   removePlayList: (value: string[]) => void;
   shufflePlayList: () => string [];
   natsortPlayList: () => string [];
+  prevPlayPath: () => string | null;
+  nextPlayPath: () => string | null;
 
 }
 
 export const usePlayListStore = create<PlayListStore>((set, get) => ({
   playList: [],
+  playPath: null,
+
   setPlayList: (value) => set({ playList: value }),
+  setPlayPath: (value) => set({ playPath: value }),
+
   appendPlayList: (value) => {
     const newPlayList = [...new Set([...get().playList, ...value])];
     set({ playList: newPlayList})
@@ -36,5 +45,45 @@ export const usePlayListStore = create<PlayListStore>((set, get) => ({
     const arr = [...get().playList].sort(sorter);
     set({ playList: arr });
     return arr
-  }
+  },
+  prevPlayPath: () => {
+    const curPlayList = get().playList;
+    if (curPlayList.length == 0) {
+      return null;
+    }
+    let prev = null;
+    const curPlayPath = get().playPath;
+    if (curPlayPath == null) {
+      prev = curPlayList[0];
+      set({ playPath: prev });
+      return prev;
+    }
+    let idx = curPlayList.indexOf(curPlayPath) -1;
+    if (idx < 0) {
+      idx = curPlayList.length - 1;
+    }
+    prev = curPlayList[idx]
+    set({ playPath: prev });
+    return prev;
+  },
+  nextPlayPath: () => {
+    const curPlayList = get().playList;
+    if (curPlayList.length == 0) {
+      return null;
+    }
+    let next = null;
+    const curPlayPath = get().playPath;
+    if (curPlayPath == null) {
+      next = curPlayList[0];
+      set({ playPath: next });
+      return next;
+    }
+    let idx = curPlayList.indexOf(curPlayPath) +1;
+    if (idx > curPlayList.length -1) {
+      idx = 0;
+    }
+    next = curPlayList[idx]
+    set({ playPath: next });
+    return next;
+  },
 }));

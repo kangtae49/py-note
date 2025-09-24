@@ -8,8 +8,6 @@ import { type RowComponentProps } from "react-window";
 import {getFilename} from "@/components/utils.ts";
 import {usePlayListStore} from "@/components/music_player/store/playListStore.ts";
 import {useSelectedPlayListStore} from "@/components/music_player/store/selectedPlayListStore.ts";
-import {useSelectionBeginStore} from "@/components/music_player/store/selectionBeginStore.ts";
-import {usePlayPathStore} from "@/components/music_player/store/playPathStore.ts";
 function PlayListRowView({
                            index,
                            playList,
@@ -18,9 +16,11 @@ function PlayListRowView({
   playList: string[];
 }>) {
   const {removePlayList} = usePlayListStore();
-  const {selectedPlayList, setSelectedPlayList, appendSelectedPlayList, removeSelectedPlayList} = useSelectedPlayListStore();
-  const {selectionBegin, setSelectionBegin} = useSelectionBeginStore();
-  const {playPath, setPlayPath} = usePlayPathStore();
+  const {
+    selectedPlayList, setSelectedPlayList, appendSelectedPlayList, removeSelectedPlayList,
+    selectionBegin, setSelectionBegin,
+  } = useSelectedPlayListStore();
+  const {playPath, setPlayPath} = usePlayListStore();
   const handleClick = (e: React.MouseEvent<HTMLDivElement>, item: string) => {
     e.preventDefault();
     window.getSelection()?.removeAllRanges();
