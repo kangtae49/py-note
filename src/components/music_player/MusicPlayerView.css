@@ -54,6 +54,13 @@
     box-shadow: none;
 }
 
+.movie-player .top .row.first .center {
+    padding: 5px 15px;
+    border: 1px solid #d9d9d9;
+    /*background-color: #d1d0d0;*/
+    border-radius: 8px;
+}
+
 .movie-player .top .row.second {
     display: flex;
     padding: 0 5px;
@@ -112,6 +119,10 @@ input[type=range]::-webkit-slider-thumb {
 
 .movie-player .play-list .row.selected {
     background-color: #d9d9d9;
+}
+
+.audio-player {
+    display: none;
 }
 
 .fa-folder { color: var(--icon-color); font-size: var(--icon-font-size); }

@@ -1,4 +1,5 @@
 import "./MusicPlayerView.css"
+import {useEffect} from "react";
 import { FontAwesomeIcon as Icon } from '@fortawesome/react-fontawesome'
 import {
   faBookMedical,
@@ -16,16 +17,8 @@ import {useSelectedPlayListStore} from "@/components/music_player/store/selected
 import {useSelectionBeginStore} from "@/components/music_player/store/selectionBeginStore.ts";
 import {usePlayPathStore} from "@/components/music_player/store/playPathStore.ts";
 import AudioView from "@/components/music_player/AudioView.tsx";
-
-// import {useDurationStore} from "@/components/music_player/store/durationStore.ts";
-// import {useCurrentTimeStore} from "@/components/music_player/store/currentTimeStore.ts";
-// import {useVolumeStore} from "@/components/music_player/store/volumeStore.ts";
-// import {useIsMutedStore} from "@/components/music_player/store/isMutedStore.ts";
-// import {useIsPlayStore} from "@/components/music_player/store/isPlayStore.ts";
-// import {usePlaybackRateStore} from "@/components/music_player/store/playbackRateStore.ts";
 import {formatSeconds, getFilename} from "@/components/utils.ts";
 import {useAudioRefStore} from "@/components/music_player/store/audioRefStore.ts";
-import {useEffect} from "react";
 
 function MusicPlayerView() {
   const {playList, appendPlayList, removePlayList, shufflePlayList, natsortPlayList} = usePlayListStore();
@@ -80,11 +73,30 @@ function MusicPlayerView() {
 
   const openDialogOpenJson = async () => {
     const result = await window.pywebview.api.open_file_dialog_open(false, ["Save files(*.json)"]);
-    console.log(result);
+    if (result === null || result.length <= 0) { return }
+    window.pywebview.api.read_json_audio_list(result[0]).then((content) => {
+      if (content === null) return;
+      const newList: string [] = JSON.parse(content);
+      appendPlayList(newList);
+      let shuffledPlayList = [];
+      if (shuffle) {
+        shuffledPlayList = shufflePlayList()
+      } else {
+        shuffledPlayList = natsortPlayList()
+      }
+
+      if (playPath == null) {
+        setPlayPath(shuffledPlayList[0]);
+      }
+    })
+
   }
   const openDialogSaveAsJson = async () => {
     const result = await window.pywebview.api.open_file_dialog_save(["Save files(*.json)"]);
-    console.log(result);
+    if (result === null || result.length <= 0) { return }
+    window.pywebview.api.write_json_audio_list(result[0], JSON.stringify(playList, null, 2)).then(() => {
+      console.log("save success");
+    });
   }
 
   useEffect(() => {
@@ -142,23 +154,29 @@ function MusicPlayerView() {
       <AudioView />
       <div className="top">
         <div className="row first">
-          <div className="icon" onClick={() => toggleShuffle()}>
-            <Icon icon={faShuffle} className={shuffle ? '': 'inactive'}/>
-          </div>
-          <div className="icon"><Icon icon={faBackwardStep}/></div>
-          <div className="icon middle"
-               onClick={async () => {
-                 setAutoPlay(paused);
-                 await togglePlay();
-               }}
-          >
-            <Icon icon={paused ? faCirclePlay : faCirclePause }/>
-          </div>
-          <div className="icon"><Icon icon={faForwardStep}/></div>
-          <div className="icon" onClick={() => toggleRepeat()}>
-            {repeat === 'repeat_all' && <Icon icon={faArrowsSpin}/>}
-            {repeat === 'repeat_one' && <Icon icon={faRotateRight}/>}
-            {repeat === 'repeat_none' && <Icon icon={faMinus}/>}
+          <div className="icon" onClick={openDialogPlayList}><Icon icon={faFolderPlus}/></div>
+          <div className="icon" onClick={clickRemovePlayList}><Icon icon={faTrashCan} className={selectedPlayList.length > 0 ? '': 'inactive'}/></div>
+          <div className="icon" onClick={openDialogOpenJson}><Icon icon={faBookMedical}/></div>
+          <div className="icon" onClick={openDialogSaveAsJson}><Icon icon={faFloppyDisk}/></div>
+          <div className="center">
+            <div className="icon" onClick={() => toggleShuffle()}>
+              <Icon icon={faShuffle} className={shuffle ? '': 'inactive'}/>
+            </div>
+            <div className="icon"><Icon icon={faBackwardStep}/></div>
+            <div className="icon middle"
+                 onClick={async () => {
+                   setAutoPlay(paused);
+                   await togglePlay();
+                 }}
+            >
+              <Icon icon={paused ? faCirclePlay : faCirclePause }/>
+            </div>
+            <div className="icon"><Icon icon={faForwardStep}/></div>
+            <div className="icon" onClick={() => toggleRepeat()}>
+              {repeat === 'repeat_all' && <Icon icon={faArrowsSpin}/>}
+              {repeat === 'repeat_one' && <Icon icon={faRotateRight}/>}
+              {repeat === 'repeat_none' && <Icon icon={faMinus}/>}
+            </div>
           </div>
 
           <div className="slider">
@@ -174,10 +192,6 @@ function MusicPlayerView() {
           <div className="icon" onClick={() => changeMuted(!muted)}>
             <Icon icon={muted ? faVolumeMute : faVolumeHigh}/>
           </div>
-          <div className="icon" onClick={openDialogPlayList}><Icon icon={faFolderPlus}/></div>
-          <div className="icon" onClick={clickRemovePlayList}><Icon icon={faTrashCan} className={selectedPlayList.length > 0 ? '': 'inactive'}/></div>
-          <div className="icon" onClick={openDialogOpenJson}><Icon icon={faBookMedical}/></div>
-          <div className="icon" onClick={openDialogSaveAsJson}><Icon icon={faFloppyDisk}/></div>
         </div>
         <div className="row second">
           <div className="title">{getFilename(playPath ?? '')}</div>

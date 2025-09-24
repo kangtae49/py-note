@@ -1,4 +1,5 @@
 import os
+import json
 from typing import List
 import webview
 
@@ -7,10 +8,16 @@ class JsApi:
     # def sayHelloTo(self, name):
     #     response = {'message': 'Hello {0}!'.format(name)}
     #     return response
+    def read_json_audio_list(self, fullpath):
+        with open(fullpath, "r") as f:
+            content = f.read()
+            jpath = json.loads(content)
+            existing_files: List[str] = [p for p in jpath if os.path.isfile(p)]
+            return json.dumps(existing_files)
 
-    def save_config(self, name, content):
+    def write_json_audio_list(self, fullpath, content):
         appdata_local = os.getenv("LOCALAPPDATA")
-        fullpath = os.path.join(appdata_local, "py-note", name)
+        # fullpath = os.path.join(appdata_local, "py-note", name)
         dirpath = os.path.dirname(fullpath)
         if not os.path.exists(dirpath):
             os.makedirs(dirpath)
