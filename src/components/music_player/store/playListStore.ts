@@ -13,6 +13,8 @@ interface PlayListStore {
   natsortPlayList: () => string [];
   prevPlayPath: () => string | null;
   nextPlayPath: () => string | null;
+  getPrev: (value: string | null) => string | null;
+  getNext: (value: string | null) => string | null;
 
 }
 
@@ -84,6 +86,41 @@ export const usePlayListStore = create<PlayListStore>((set, get) => ({
     }
     next = curPlayList[idx]
     set({ playPath: next });
+    return next;
+  },
+  getPrev: (value) => {
+    const curPlayList = get().playList;
+    if (curPlayList.length == 0) {
+      return null;
+    }
+    let prev: string | null;
+    if (value == null) {
+      prev = curPlayList[0];
+      return prev
+    }
+    let idx = curPlayList.indexOf(value) -1;
+    if (idx < 0) {
+      idx = curPlayList.length - 1;
+    }
+    prev = curPlayList[idx]
+    return prev;
+  },
+  getNext: (value) => {
+    const curPlayList = get().playList;
+    if (curPlayList.length == 0) {
+      return null;
+    }
+    let next: string | null;
+    if (value == null) {
+      next = curPlayList[0];
+      set({ playPath: next });
+      return next;
+    }
+    let idx = curPlayList.indexOf(value) +1;
+    if (idx > curPlayList.length -1) {
+      idx = 0;
+    }
+    next = curPlayList[idx]
     return next;
   },
 }));

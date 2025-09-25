@@ -1,5 +1,5 @@
 import "./MusicPlayerView.css"
-import {useEffect} from "react";
+import React, {useEffect, useRef} from "react";
 import { FontAwesomeIcon as Icon } from '@fortawesome/react-fontawesome'
 import {
   faBookMedical,
@@ -19,14 +19,16 @@ import {formatSeconds, getFilename} from "@/components/utils.ts";
 import {useAudioRefStore} from "@/components/music_player/store/audioRefStore.ts";
 
 function MusicPlayerView() {
+  const containerRef = useRef<HTMLDivElement>(null);
   const {
     playList, appendPlayList, removePlayList, shufflePlayList, natsortPlayList,
     playPath, setPlayPath,
     prevPlayPath, nextPlayPath,
+    getPrev, getNext,
   } = usePlayListStore();
   const {
     selectedPlayList, setSelectedPlayList,
-    setSelectionBegin,
+    selectionBegin, setSelectionBegin,
   } = useSelectedPlayListStore();
   const {
     audioRef,
@@ -116,6 +118,44 @@ function MusicPlayerView() {
     setSelectionBegin(null)
   }
 
+  const onKeyDownHandler = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    e.preventDefault()
+    window.getSelection()?.removeAllRanges();
+
+    console.log(e.key)
+    if (e.ctrlKey && e.key === 'a') {
+      setSelectedPlayList(playList);
+    } else if (e.key === "Delete") {
+      clickRemovePlayList();
+    } else if (e.key === "ArrowLeft") {
+      prevPlayPath()
+    } else if (e.key === "ArrowRight") {
+      nextPlayPath()
+    } else if (e.key === "ArrowUp") {
+      console.log("ArrowUp")
+      const newSelection = getPrev(selectionBegin)
+      if(newSelection !== null) {
+        setSelectionBegin(newSelection)
+        setSelectedPlayList([newSelection])
+
+      }
+    } else if (e.key === "ArrowDown") {
+      console.log("ArrowDown")
+      const newSelection = getNext(selectionBegin)
+      if(newSelection !== null) {
+        setSelectionBegin(newSelection)
+        setSelectedPlayList([newSelection])
+      }
+    } else if (e.key === "Enter") {
+      if (selectedPlayList.length == 1) {
+        if (paused) {
+          setAutoPlay(true);
+        }
+        setPlayPath(selectedPlayList[0]);
+      }
+    }
+  }
+
   useEffect(() => {
     if (shuffle) {
       shufflePlayList()
@@ -167,6 +207,7 @@ function MusicPlayerView() {
   }, [ended])
 
   useEffect(() => {
+    containerRef.current?.focus();
     window.pywebview.api.read_json_audio_list_latest().then((jsonStr) => {
       if (jsonStr === null) return;
       loadJson(jsonStr);
@@ -174,7 +215,7 @@ function MusicPlayerView() {
   }, [])
 
   return (
-    <div className="widget movie-player">
+    <div className="widget movie-player" ref={containerRef} onKeyDown={onKeyDownHandler} tabIndex={0}>
       <AudioView />
       <div className="top">
         <div className="row first">
@@ -240,7 +281,9 @@ function MusicPlayerView() {
       <List className="play-list"
             rowHeight={22}
             rowCount={playList.length}
-            rowComponent={PlayListRowView} rowProps={{playList}} />
+            rowComponent={PlayListRowView} rowProps={{playList}}
+
+      />
     </div>
   )
 }
