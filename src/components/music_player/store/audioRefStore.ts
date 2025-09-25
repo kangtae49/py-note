@@ -2,6 +2,8 @@ import { create } from "zustand"
 import type {RefObject} from "react";
 
 export type RepeatType = 'repeat_none' | 'repeat_all' | 'repeat_one'
+const INIT_AUTO_PLAY = true;
+const INIT_VOLUME = 0.5;
 
 export interface AudioRefStore {
   audioRef: RefObject<HTMLAudioElement | null> | null
@@ -41,16 +43,18 @@ export interface AudioRefStore {
 
 }
 
+
+
 export const useAudioRefStore = create<AudioRefStore>((set, get) => ({
   audioRef: null,
   setAudioRef: (audioRef) => set({ audioRef }),
-  volume: 1.0,
+  volume: INIT_VOLUME,
   duration: 0,
   currentTime: 0,
   playbackRate: 1.0,
   muted: false,
-  paused: true,
-  autoPlay: false,
+  paused: !INIT_AUTO_PLAY,
+  autoPlay: INIT_AUTO_PLAY,
   repeat: 'repeat_all',
   shuffle: true,
   ended: false,

@@ -25,6 +25,16 @@ class JsApi:
             f.write(content)
         return
 
+    def read_json_audio_list_latest(self):
+        appdata_local = os.getenv("LOCALAPPDATA")
+        fullpath = os.path.join(appdata_local, "py-note", "latest.json")
+        return self.read_json_audio_list(fullpath)
+
+    def write_json_audio_list_latest(self, content):
+        appdata_local = os.getenv("LOCALAPPDATA")
+        fullpath = os.path.join(appdata_local, "py-note", "latest.json")
+        self.write_json_audio_list(fullpath, content)
+
     def open_file_dialog_open(self, allow_multiple: bool, file_types: List[str]):
         if file_types is None:
             file_types = ['All files (*.*)']

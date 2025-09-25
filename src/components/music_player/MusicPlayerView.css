@@ -3,7 +3,7 @@
     display: flex;
     flex-direction: column;
     --top-height: 60px;
-    --first-height: 45px;
+    --first-height: 60px;
     --icon-size: 24px;
     --icon-size-middle: 35px;
     --icon-font-size: 17px;
@@ -25,6 +25,7 @@
     justify-content: center; align-items: center;
     padding: 0 5px;
     height: var(--first-height);
+    box-sizing: border-box;
 }
 
 .movie-player .top .row.first .icon {
@@ -60,7 +61,8 @@
     padding: 5px 15px;
     border: 1px solid #d9d9d9;
     /*background-color: #d1d0d0;*/
-    border-radius: 8px;
+    border-radius: 15px;
+    box-sizing: border-box;
 }
 
 .movie-player .top .row.second {
