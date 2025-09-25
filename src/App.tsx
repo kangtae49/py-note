@@ -11,11 +11,33 @@ import HelpView from "@/components/HelpView.tsx";
 import type {PyMenuAction} from "@/models";
 import {useMosaicStore} from "@/store/mosaicStore.ts";
 import MusicPlayerView from "@/components/music_player/MusicPlayerView.tsx";
+import { FontAwesomeIcon as Icon } from '@fortawesome/react-fontawesome'
+import {
+  faMusic
+} from '@fortawesome/free-solid-svg-icons'
 
-const ELEMENT_MAP: Record<PyMenuAction, JSX.Element> = {
-  "about": <AboutView />,
-  "help": <HelpView />,
-  "music_player": <MusicPlayerView />,
+interface TitleInfo {
+  title: string,
+  icon: JSX.Element,
+  view: JSX.Element,
+}
+
+const ELEMENT_MAP: Record<PyMenuAction, TitleInfo> = {
+  "about": {
+    title: "About",
+    icon: <div />,
+    view: <AboutView/>
+  },
+  "help": {
+    title: "Help",
+    icon: <div />,
+    view: <HelpView/>
+  },
+  "music_player": {
+    title: "Music Player",
+    icon: <div><Icon icon={faMusic} /></div>,
+    view: <MusicPlayerView/>
+  }
 }
 
 function App() {
@@ -32,30 +54,54 @@ function App() {
           <MosaicWindow<PyMenuAction>
             path={path}
             title={id}
-            toolbarControls={[
-              <DefaultToolbarButton
-                title="Minimize"
-                onClick={() => minimizeView(id)}
-                className="bp6-icon-minus"
-              />,
-              <DefaultToolbarButton
-                title="Maximize"
-                onClick={() => maximizeView(id)}
-                className="bp6-icon-maximize"
-              />,
-              <DefaultToolbarButton
-                title="Close Window"
-                onClick={() => removeView(id)}
-                className="mosaic-default-control bp6-button bp6-minimal close-button bp6-icon-cross"
-              />
-            //   <button title="Expand"
-            //           className="mosaic-default-control bp6-button bp6-minimal expand-button bp6-icon-maximize"></button>,
-            //   <button title="Close Window"
-            //           className="mosaic-default-control bp6-button bp6-minimal close-button bp6-icon-cross"></button>
-            //
-            ]}
+            renderToolbar={()=> (
+              <div className="title-bar">
+                <div className="title">
+                  {ELEMENT_MAP[id].icon}<div>{ELEMENT_MAP[id].title}</div>
+                </div>
+                <div className="controls">
+                  <DefaultToolbarButton
+                    title="Minimize"
+                    onClick={() => minimizeView(id)}
+                    className="bp6-icon-minus"
+                  />
+                  <DefaultToolbarButton
+                    title="Maximize"
+                    onClick={() => maximizeView(id)}
+                    className="bp6-icon-maximize"
+                  />
+                  <DefaultToolbarButton
+                    title="Close Window"
+                    onClick={() => removeView(id)}
+                    className="mosaic-default-control bp6-button bp6-minimal close-button bp6-icon-cross"
+                  />
+                </div>
+              </div>
+            )}
+            // toolbarControls={[
+            //   <DefaultToolbarButton
+            //     title="Minimize"
+            //     onClick={() => minimizeView(id)}
+            //     className="bp6-icon-minus"
+            //   />,
+            //   <DefaultToolbarButton
+            //     title="Maximize"
+            //     onClick={() => maximizeView(id)}
+            //     className="bp6-icon-maximize"
+            //   />,
+            //   <DefaultToolbarButton
+            //     title="Close Window"
+            //     onClick={() => removeView(id)}
+            //     className="mosaic-default-control bp6-button bp6-minimal close-button bp6-icon-cross"
+            //   />
+            // //   <button title="Expand"
+            // //           className="mosaic-default-control bp6-button bp6-minimal expand-button bp6-icon-maximize"></button>,
+            // //   <button title="Close Window"
+            // //           className="mosaic-default-control bp6-button bp6-minimal close-button bp6-icon-cross"></button>
+            // //
+            // ]}
           >
-            {ELEMENT_MAP[id]}
+            {ELEMENT_MAP[id].view}
           </MosaicWindow>
         )}
         className="mosaic-blueprint-theme"

@@ -194,7 +194,7 @@ function MusicPlayerView() {
             <Icon icon={muted ? faVolumeMute : faVolumeHigh}/>
           </div>
         </div>
-        <div className="row second">
+        <div className={`row second ${paused ? '' : 'playing'}`}>
           <div className="title">{getFilename(playPath ?? '')}</div>
           <div className="tm">{formatSeconds(currentTime)}</div>
           <div className="slider">
