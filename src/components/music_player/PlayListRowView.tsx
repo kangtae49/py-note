@@ -8,6 +8,7 @@ import { type RowComponentProps } from "react-window";
 import {getFilename} from "@/components/utils.ts";
 import {usePlayListStore} from "@/components/music_player/store/playListStore.ts";
 import {useSelectedPlayListStore} from "@/components/music_player/store/selectedPlayListStore.ts";
+import {useAudioRefStore} from "@/components/music_player/store/audioRefStore.ts";
 function PlayListRowView({
                            index,
                            playList,
@@ -15,12 +16,13 @@ function PlayListRowView({
                       }: RowComponentProps<{
   playList: string[];
 }>) {
-  const {removePlayList} = usePlayListStore();
+  const {paused, setAutoPlay} = useAudioRefStore();
+  const {removePlayList, playPath, setPlayPath} = usePlayListStore();
   const {
     selectedPlayList, setSelectedPlayList, appendSelectedPlayList, removeSelectedPlayList,
     selectionBegin, setSelectionBegin,
   } = useSelectedPlayListStore();
-  const {playPath, setPlayPath} = usePlayListStore();
+
   const handleClick = (e: React.MouseEvent<HTMLDivElement>, item: string) => {
     e.preventDefault();
     window.getSelection()?.removeAllRanges();
@@ -78,6 +80,10 @@ function PlayListRowView({
     window.getSelection()?.removeAllRanges();
     console.log(path)
     setSelectedPlayList([]);
+
+    if (paused) {
+      setAutoPlay(true);
+    }
     setPlayPath(path);
   }
 
