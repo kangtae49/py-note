@@ -51,7 +51,7 @@ export const usePlayListStore = create<PlayListStore>((set, get) => ({
     if (curPlayList.length == 0) {
       return null;
     }
-    let prev = null;
+    let prev: string | null;
     const curPlayPath = get().playPath;
     if (curPlayPath == null) {
       prev = curPlayList[0];
@@ -71,7 +71,7 @@ export const usePlayListStore = create<PlayListStore>((set, get) => ({
     if (curPlayList.length == 0) {
       return null;
     }
-    let next = null;
+    let next: string | null;
     const curPlayPath = get().playPath;
     if (curPlayPath == null) {
       next = curPlayList[0];

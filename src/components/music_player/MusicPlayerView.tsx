@@ -46,7 +46,7 @@ function MusicPlayerView() {
       .then((res) => {
         if (res === null) { return }
         appendPlayList(res);
-        let playList = [];
+        let playList: string[];
         if (shuffle) {
           playList = shufflePlayList()
         } else {
@@ -75,7 +75,7 @@ function MusicPlayerView() {
       if (content === null) return;
       const newList: string [] = JSON.parse(content);
       appendPlayList(newList);
-      let shuffledPlayList = [];
+      let shuffledPlayList: string[];
       if (shuffle) {
         shuffledPlayList = shufflePlayList()
       } else {

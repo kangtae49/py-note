@@ -1,3 +1,5 @@
+export {};
+
 declare global {
   interface Window {
     pywebview: {
@@ -10,6 +12,7 @@ declare global {
         }
     };
   }
+
 }
 
-export {};
+
