@@ -58,6 +58,7 @@
 }
 
 .movie-player .top .row.first .center {
+    margin: 0 10px 0 10px;
     padding: 5px 15px;
     border: 1px solid #d9d9d9;
     /*background-color: #d1d0d0;*/
@@ -100,14 +101,12 @@ input[type=range] {
 
 input[type=range]::-webkit-slider-runnable-track {
     height: 7px;
-    /*background: #d1866b;*/
     background: #d9d9d9;
 }
 input[type=range]::-webkit-slider-thumb {
     -webkit-appearance: none;
     width: 21px;
     height: 21px;
-    /*background: #bf4242;*/
     background: #f4a261;
     border-radius: 50%;
     margin-top: -7px;
@@ -145,6 +144,32 @@ input[type=range]::-webkit-slider-thumb {
     0%   { background-position: 0% 50%; }
     50%  { background-position: 100% 50%; }
     100% { background-position: 0% 50%; }
+}
+
+.badge-wrap{
+    position: relative;
+    display: inline-block;
+}
+
+.badge{
+    position: absolute;
+    top: 0;
+    right: 0;
+    transform: translate(35%, -35%);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    height: 20px;
+    min-width: 20px;
+    padding: 0 6px;
+    border-radius: 999px;
+    background: #ea4678;
+    color: #fff;
+    font-size: 12px;
+    line-height: 1;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.25);
+    pointer-events: none;
+    user-select: none;
 }
 
 .fa-folder { color: var(--icon-color); font-size: var(--icon-font-size); }

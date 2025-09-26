@@ -234,10 +234,13 @@ function MusicPlayerView() {
       <AudioView />
       <div className="top">
         <div className="row first">
-          <div className="icon" onClick={openDialogPlayList}><Icon icon={faFolderPlus}/></div>
-          <div className="icon" onClick={openDialogOpenJson}><Icon icon={faBookMedical}/></div>
-          <div className="icon" onClick={openDialogSaveAsJson}><Icon icon={faFloppyDisk}/></div>
-          <div className="icon" onClick={clickRemovePlayList}><Icon icon={faTrashCan} className={selectedPlayList.length > 0 ? '': 'inactive'}/></div>
+          <div className="icon" onClick={openDialogPlayList} title="Open Audio Files"><Icon icon={faFolderPlus}/></div>
+          <div className="icon" onClick={openDialogOpenJson} title="Open Audio Book"><Icon icon={faBookMedical}/></div>
+          <div className="icon" onClick={openDialogSaveAsJson} title="Save Audio Book"><Icon icon={faFloppyDisk}/></div>
+          <div className="icon badge-wrap" onClick={clickRemovePlayList} title="Delete Selection Files">
+            <Icon icon={faTrashCan} className={selectedPlayList.length > 0 ? '': 'inactive'}/>
+            {selectedPlayList.length > 0 && <div className="badge">{selectedPlayList.length}</div>}
+          </div>
           <div className="center">
             <div className="icon" onClick={() => toggleShuffle()}>
               <Icon icon={faShuffle} className={shuffle ? '': 'inactive'}/>
@@ -256,11 +259,9 @@ function MusicPlayerView() {
             <div className="icon" onClick={() => nextPlayPath()}>
               <Icon icon={faForwardStep}/>
             </div>
-            <div className="icon" onClick={() => toggleRepeat()}>
-              {repeat === 'repeat_all' && <Icon icon={faArrowsSpin}/>}
-              {repeat === 'repeat_one' && <Icon icon={faRotateRight}/>}
-              {repeat === 'repeat_none' && <Icon icon={faMinus}/>}
-            </div>
+            {repeat === 'repeat_all' && <div className="icon" onClick={() => toggleRepeat()} title="Repeat All"><Icon icon={faArrowsSpin}/></div>}
+            {repeat === 'repeat_one' && <div className="icon" onClick={() => toggleRepeat()} title="Repeat One"><Icon icon={faRotateRight}/></div>}
+            {repeat === 'repeat_none' && <div className="icon" onClick={() => toggleRepeat()} title="Repeat Off"><Icon icon={faMinus}/></div>}
           </div>
 
           <div className="slider">
