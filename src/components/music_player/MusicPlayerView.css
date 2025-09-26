@@ -127,6 +127,18 @@ input[type=range]::-webkit-slider-thumb {
     background-color: #d9d9d9;
 }
 
+.movie-player .play-list .row .title {
+    display: flex;
+    inset: 0;
+    transition: background 0.5s ease;
+}
+.movie-player .play-list .row .title.playing {
+    display: flex;
+    background: linear-gradient(270deg, #ff6ec4, #7873f5, #4ade80, #facc15);
+    background-size: 400% 400%;
+    animation: gradientShift 10s ease infinite;
+}
+
 .audio-player {
     display: none;
 }
@@ -163,7 +175,7 @@ input[type=range]::-webkit-slider-thumb {
     min-width: 20px;
     padding: 0 6px;
     border-radius: 999px;
-    background: #ea4678;
+    background: #ea7a9c;
     color: #fff;
     font-size: 12px;
     line-height: 1;

@@ -87,14 +87,17 @@ function PlayListRowView({
     setPlayPath(path);
   }
 
+  const isPlayPath = playPath == playList[index];
+  const isSelected = selectedPlayList.includes(playList[index]);
+
   return (
-    <div className={`row ${selectedPlayList.includes(playList[index]) ? 'selected': ''}`} style={style}>
-      <div className="title" title={playList[index]}
+    <div className={`row ${isSelected ? 'selected': ''}`} style={style}>
+      <div className={`title  ${(!paused && isPlayPath) ? 'playing' : ''}`} title={playList[index]}
            onClick={(e) => handleClick(e, playList[index])}
            onDoubleClick={() => clickPlayPath(playList[index])}
       >
-        {playPath == playList[index] && <Icon icon={faMusic}/>}
-        {getFilename(playList[index])}
+        {isPlayPath && <div><Icon icon={faMusic}/></div>}
+        <div>{getFilename(playList[index])}</div>
       </div>
       <div
         onClick={() => removePlayList([playList[index]])}
