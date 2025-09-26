@@ -11,3 +11,7 @@ class PyMenuEvent(BaseModel):
     action: PyMenuAction
 
 
+class MusicPlayerSetting(BaseModel):
+    playPath: str
+    currentTime: float
+    volume: float

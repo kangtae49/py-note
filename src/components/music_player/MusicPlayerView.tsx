@@ -11,17 +11,19 @@ import {
   faArrowsSpin, faRotateRight, faMinus,
 } from '@fortawesome/free-solid-svg-icons'
 import {List,  type ListImperativeAPI} from 'react-window'
-import {usePlayListStore} from "@/components/music_player/store/playListStore.ts";
-import PlayListRowView from "@/components/music_player/PlayListRowView.tsx";
-import {useSelectedPlayListStore} from "@/components/music_player/store/selectedPlayListStore.ts";
-import AudioView from "@/components/music_player/AudioView.tsx";
+import PlayListRowView from "./PlayListRowView.tsx";
+import AudioView from "./AudioView.tsx";
+import {usePlayListStore} from "./store/playListStore.ts";
+import {useSelectedPlayListStore} from "./store/selectedPlayListStore.ts";
+import {useAudioRefStore} from "./store/audioRefStore.ts";
 import {formatSeconds, getFilename} from "@/components/utils.ts";
-import {useAudioRefStore} from "@/components/music_player/store/audioRefStore.ts";
+import type {MusicPlayerSetting} from "@/models";
+
+
 
 function MusicPlayerView() {
   const containerRef = useRef<HTMLDivElement>(null);
   const listRef = useRef<ListImperativeAPI>(null);
-
 
   const {
     playList, appendPlayList, removePlayList, shufflePlayList, natsortPlayList,
@@ -75,7 +77,7 @@ function MusicPlayerView() {
       })
   }
 
-  const loadJson = (jsonStr: string): string [] => {
+  const loadJson = async (jsonStr: string): Promise<string []> => {
 
     const newList: string [] = JSON.parse(jsonStr);
     appendPlayList(newList);
@@ -86,18 +88,27 @@ function MusicPlayerView() {
       shuffledPlayList = natsortPlayList()
     }
     console.log('playPath', playPath)
-    if (playPath == null) {
+
+
+    const settingStr = await window.pywebview.api.read_setting_music_player();
+    if (settingStr != null) {
+      const setting: MusicPlayerSetting = JSON.parse(settingStr);
+      console.log(setting)
+      setPlayPath(setting.playPath);
+      changeCurrentTime(setting.currentTime);
+    } else if (playPath == null) {
       setPlayPath(shuffledPlayList[0]);
     }
+
     return shuffledPlayList;
   }
 
   const openDialogOpenJson = async () => {
     const result = await window.pywebview.api.open_file_dialog_open(false, ["Save files(*.json)"]);
     if (result === null || result.length <= 0) { return }
-    window.pywebview.api.read_json_audio_list(result[0]).then((jsonStr) => {
+    window.pywebview.api.read_json_audio_list(result[0]).then( async (jsonStr) => {
       if (jsonStr === null) return;
-      const shuffledPlayList = loadJson(jsonStr);
+      const shuffledPlayList = await loadJson(jsonStr);
       const content = JSON.stringify(shuffledPlayList, null, 2);
       window.pywebview.api.write_json_audio_list_latest(content).then(() => {
         console.log("save(latest) success");
@@ -121,6 +132,15 @@ function MusicPlayerView() {
     removePlayList(selectedPlayList);
     setSelectedPlayList([])
     setSelectionBegin(null)
+  }
+
+  const clickTogglePlay = async () => {
+    setAutoPlay(paused);
+    await togglePlay().then(() => {
+      if (playPath != null) {
+        window.pywebview.api.write_setting_music_player(JSON.stringify({playPath, currentTime}))
+      }
+    });
   }
 
   const onKeyDownHandler = (e: React.KeyboardEvent<HTMLDivElement>) => {
@@ -225,7 +245,7 @@ function MusicPlayerView() {
     containerRef.current?.focus();
     window.pywebview.api.read_json_audio_list_latest().then((jsonStr) => {
       if (jsonStr === null) return;
-      loadJson(jsonStr);
+      loadJson(jsonStr).then();
     })
   }, [])
 
@@ -249,10 +269,7 @@ function MusicPlayerView() {
               <Icon icon={faBackwardStep}/>
             </div>
             <div className="icon middle"
-                 onClick={async () => {
-                   setAutoPlay(paused);
-                   await togglePlay();
-                 }}
+                 onClick={() => clickTogglePlay()}
             >
               <Icon icon={paused ? faCirclePlay : faCirclePause }/>
             </div>

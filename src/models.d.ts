@@ -7,6 +7,11 @@
 
 export type PyMenuAction = "about" | "help" | "music_player";
 
+export interface MusicPlayerSetting {
+  playPath: string;
+  currentTime: number;
+  volume: number;
+}
 export interface PyMenuEvent {
   action: PyMenuAction;
 }

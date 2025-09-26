@@ -1,6 +1,6 @@
-import {useAudioRefStore} from "@/components/music_player/store/audioRefStore.ts";
 import {useEffect, useRef} from "react";
-import {usePlayListStore} from "@/components/music_player/store/playListStore.ts";
+import {useAudioRefStore} from "./store/audioRefStore.ts";
+import {usePlayListStore} from "./store/playListStore.ts";
 
 
 function AudioView() {

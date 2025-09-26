@@ -9,6 +9,8 @@ class JsApi:
     #     response = {'message': 'Hello {0}!'.format(name)}
     #     return response
     def read_json_audio_list(self, fullpath):
+        if not os.path.isfile(fullpath):
+            return None
         with open(fullpath, "r") as f:
             content = f.read()
             jpath = json.loads(content)
@@ -16,8 +18,6 @@ class JsApi:
             return json.dumps(existing_files)
 
     def write_json_audio_list(self, fullpath, content):
-        appdata_local = os.getenv("LOCALAPPDATA")
-        # fullpath = os.path.join(appdata_local, "py-note", name)
         dirpath = os.path.dirname(fullpath)
         if not os.path.exists(dirpath):
             os.makedirs(dirpath)
@@ -27,13 +27,32 @@ class JsApi:
 
     def read_json_audio_list_latest(self):
         appdata_local = os.getenv("LOCALAPPDATA")
-        fullpath = os.path.join(appdata_local, "py-note", "latest.json")
+        fullpath = os.path.join(appdata_local, "py-note", "music_player.latest_list.json")
         return self.read_json_audio_list(fullpath)
 
     def write_json_audio_list_latest(self, content):
         appdata_local = os.getenv("LOCALAPPDATA")
-        fullpath = os.path.join(appdata_local, "py-note", "latest.json")
+        fullpath = os.path.join(appdata_local, "py-note", "music_player.latest_list.json")
         self.write_json_audio_list(fullpath, content)
+
+    def read_setting_music_player(self):
+        appdata_local = os.getenv("LOCALAPPDATA")
+        fullpath = os.path.join(appdata_local, "py-note", "music_player.setting.json")
+        if not os.path.isfile(fullpath):
+            return None
+        with open(fullpath, "r") as f:
+            content = f.read()
+            return content
+
+    def write_setting_music_player(self, content):
+        appdata_local = os.getenv("LOCALAPPDATA")
+        fullpath = os.path.join(appdata_local, "py-note", "music_player.setting.json")
+        dirpath = os.path.dirname(fullpath)
+        if not os.path.exists(dirpath):
+            os.makedirs(dirpath)
+        with open(fullpath, "w") as f:
+            f.write(content)
+
 
     def open_file_dialog_open(self, allow_multiple: bool, file_types: List[str]):
         if file_types is None:
