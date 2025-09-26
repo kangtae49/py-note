@@ -10,7 +10,7 @@ import {
   faFloppyDisk,
   faArrowsSpin, faRotateRight, faMinus,
 } from '@fortawesome/free-solid-svg-icons'
-import { List } from 'react-window'
+import {List,  type ListImperativeAPI} from 'react-window'
 import {usePlayListStore} from "@/components/music_player/store/playListStore.ts";
 import PlayListRowView from "@/components/music_player/PlayListRowView.tsx";
 import {useSelectedPlayListStore} from "@/components/music_player/store/selectedPlayListStore.ts";
@@ -20,11 +20,16 @@ import {useAudioRefStore} from "@/components/music_player/store/audioRefStore.ts
 
 function MusicPlayerView() {
   const containerRef = useRef<HTMLDivElement>(null);
+  const listRef = useRef<ListImperativeAPI>(null);
+
+
   const {
     playList, appendPlayList, removePlayList, shufflePlayList, natsortPlayList,
     playPath, setPlayPath,
     prevPlayPath, nextPlayPath,
     getPrev, getNext,
+    setPlayListRef,
+    scrollPlayPath,
   } = usePlayListStore();
   const {
     selectedPlayList, setSelectedPlayList,
@@ -122,29 +127,33 @@ function MusicPlayerView() {
     e.preventDefault()
     window.getSelection()?.removeAllRanges();
 
-    console.log(e.key)
     if (e.ctrlKey && e.key === 'a') {
       setSelectedPlayList(playList);
     } else if (e.key === "Delete") {
       clickRemovePlayList();
     } else if (e.key === "ArrowLeft") {
-      prevPlayPath()
+      const newPlayPath = prevPlayPath()
+      if (newPlayPath !== null) {
+        scrollPlayPath(newPlayPath)
+      }
     } else if (e.key === "ArrowRight") {
-      nextPlayPath()
+      const newPlayPath = nextPlayPath()
+      if (newPlayPath !== null) {
+        scrollPlayPath(newPlayPath)
+      }
     } else if (e.key === "ArrowUp") {
-      console.log("ArrowUp")
       const newSelection = getPrev(selectionBegin)
       if(newSelection !== null) {
         setSelectionBegin(newSelection)
         setSelectedPlayList([newSelection])
-
+        scrollPlayPath(newSelection)
       }
     } else if (e.key === "ArrowDown") {
-      console.log("ArrowDown")
       const newSelection = getNext(selectionBegin)
       if(newSelection !== null) {
         setSelectionBegin(newSelection)
         setSelectedPlayList([newSelection])
+        scrollPlayPath(newSelection)
       }
     } else if (e.key === "Enter") {
       if (selectedPlayList.length == 1) {
@@ -205,6 +214,12 @@ function MusicPlayerView() {
       }
     }
   }, [ended])
+
+  useEffect(() => {
+    if (listRef?.current !== null) {
+      setPlayListRef(listRef.current);
+    }
+  }, [listRef?.current])
 
   useEffect(() => {
     containerRef.current?.focus();
@@ -279,6 +294,7 @@ function MusicPlayerView() {
         </div>
       </div>
       <List className="play-list"
+            listRef={listRef}
             rowHeight={22}
             rowCount={playList.length}
             rowComponent={PlayListRowView} rowProps={{playList}}

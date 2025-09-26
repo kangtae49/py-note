@@ -1,9 +1,14 @@
 import {create} from "zustand/react";
 import natsort from "natsort";
+// import type {RefObject} from "react";
+import {type ListImperativeAPI} from 'react-window';
 
 interface PlayListStore {
+  playListRef: ListImperativeAPI | null;
   playList: string[];
   playPath: string | null;
+
+  setPlayListRef: (value: ListImperativeAPI | null) => void;
   setPlayList: (value: string[]) => void;
   setPlayPath: (value: string | null) => void;
 
@@ -16,12 +21,16 @@ interface PlayListStore {
   getPrev: (value: string | null) => string | null;
   getNext: (value: string | null) => string | null;
 
+  scrollPlayPath: (value: string) => void;
+
 }
 
 export const usePlayListStore = create<PlayListStore>((set, get) => ({
+  playListRef: null,
   playList: [],
   playPath: null,
 
+  setPlayListRef: (value) => set({ playListRef: value }),
   setPlayList: (value) => set({ playList: value }),
   setPlayPath: (value) => set({ playPath: value }),
 
@@ -123,4 +132,12 @@ export const usePlayListStore = create<PlayListStore>((set, get) => ({
     next = curPlayList[idx]
     return next;
   },
+  scrollPlayPath: (value: string) => {
+    const curPlayList = get().playList;
+    const listRef = get().playListRef;
+    const idx = curPlayList.indexOf(value);
+    if (idx >= 0) {
+      listRef?.scrollToRow({align:"auto", behavior: "auto", index: idx});
+    }
+  }
 }));
